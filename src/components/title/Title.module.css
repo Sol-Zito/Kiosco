@@ -1,0 +1,44 @@
+.typography_title {
+    text-align: center;
+    font-weight: 600;
+    width: 100%;
+    /* margin: 0; */
+    /* color: #b75e5e; */
+    color: #038C7F;
+    /* padding: 10px; */
+
+}
+
+.typography_title::before {
+    right: .5em;
+    margin-left: -50%;
+}
+
+.typography_title::after {
+    left: .5em;
+    margin-right: -50%;
+}
+
+.typography_title:after,
+.typography_title:before {
+    content: "";
+    display: inline-block;
+    height: 4px;
+    position: relative;
+    vertical-align: middle;
+    width: 25%;
+    /* background-color: #b75e5e; */
+    background-color: #038C7F;
+}
+
+@media screen and (max-width: 750px) {
+    .typography_title {
+        font-size: larger;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .typography_title {
+        font-size: initial;
+    }
+}
