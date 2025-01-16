@@ -8,7 +8,7 @@ export const Header = () => {
         <img style={{ padding: "0px 8px" }} src="/vite.svg" alt="logo" />
       </div>
       <nav className="nav">
-        <Link to="/">- Inicio</Link>
+        <Link to="/">- Productos</Link>
         <Link to="/createProduct">- Agregar producto</Link>
       </nav>
     </div>
