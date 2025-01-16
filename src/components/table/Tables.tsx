@@ -99,22 +99,46 @@ const paginationModel = { page: 0, pageSize: 8 };
 
 export default function DataTable() {
   return (
-    <Paper
-      sx={{
-        height: "100%",
-        minHeight: "400px",
-        width: "80%",
-        margin: "auto",
-      }}
-    >
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{ pagination: { paginationModel } }}
-        pageSizeOptions={[8, 10]}
-        checkboxSelection
-        sx={{ border: 0 }}
-      />
-    </Paper>
+    <>
+      {rows.length > 0 ? (
+        <Paper
+          sx={{
+            height: "100%",
+            minHeight: "400px",
+            width: "80%",
+            margin: "auto",
+          }}
+        >
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[8, 10]}
+            checkboxSelection
+            sx={{ border: 0 }}
+          />
+        </Paper>
+      ) : (
+        <Paper
+          sx={{
+            height: "100%",
+            minHeight: "40px",
+            width: "80%",
+            margin: "auto",
+          }}
+          variant="outlined"
+        >
+          <p>Aun no se han agregado productos...</p>
+          <Link to="/createProduct">
+            <Button
+              variant="outlined"
+              style={{ padding: "5px", marginBottom: "5px", color: "#038C7F" }}
+            >
+              Crear producto
+            </Button>
+          </Link>
+        </Paper>
+      )}
+    </>
   );
 }
