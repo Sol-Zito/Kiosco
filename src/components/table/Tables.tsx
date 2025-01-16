@@ -24,11 +24,13 @@ const columns: GridColDef[] = [
     field: "update",
     headerName: "Editar",
     type: "string",
-    renderCell: () => (
+    renderCell: (e) => (
       <strong>
-        <Button variant="contained" size="small">
-          <EditIcon />
-        </Button>
+        <Link to={`/updateProduct/${e.id}`}>
+          <Button variant="contained" size="small">
+            <EditIcon />
+          </Button>
+        </Link>
       </strong>
     ),
   },
@@ -36,9 +38,14 @@ const columns: GridColDef[] = [
     field: "delete",
     headerName: "Borrar",
     type: "string",
-    renderCell: () => (
+    renderCell: (e) => (
       <strong>
-        <Button variant="contained" size="small" color="error">
+        <Button
+          variant="contained"
+          size="small"
+          color="error"
+          onClick={() => console.log(e.id)}
+        >
           <DeleteForeverIcon />
         </Button>
       </strong>
