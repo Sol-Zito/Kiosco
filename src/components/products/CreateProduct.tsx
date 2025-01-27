@@ -3,6 +3,7 @@ import { Title } from "../title/Title";
 import { FormControl, Input, InputLabel } from "@mui/material";
 import { createProduct, createProductBD } from "../../service/createProduct";
 import "./style.css";
+import AlertDialog from "../dialog/AlertDialog";
 
 export const CreateProduct = () => {
   const [productData, setProductData] = useState<createProduct>({
@@ -12,13 +13,16 @@ export const CreateProduct = () => {
     stock: 0,
   });
 
+  const [dialog, setDialog] = useState(false);
+
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       let resp = await createProductBD(productData);
       if (resp) {
         e.target.reset();
-        alert(resp);
+        setDialog(true);
+        // alert(resp);
       }
     } catch (error) {
       alert(error);
@@ -95,6 +99,18 @@ export const CreateProduct = () => {
 
         <button>Agregar</button>
       </form>
+
+      <div>
+        {dialog && (
+          <AlertDialog
+            title={"Producto creado correctamente"}
+            description="Desea crear otro producto?"
+            opc1={"si"}
+            opc2={"no"}
+            isOpen={dialog}
+          />
+        )}
+      </div>
     </div>
   );
 };
