@@ -1,18 +1,12 @@
 import { useState } from "react";
 import { Title } from "../title/Title";
 import { FormControl, Input, InputLabel } from "@mui/material";
+import { createProduct, createProductBD } from "../../service/createProduct";
 import "./style.css";
 
 export const CreateProduct = () => {
-  interface createProduct {
-    nameProduct: string;
-    price: number;
-    description: string;
-    stock: number;
-  }
-
   const [productData, setProductData] = useState<createProduct>({
-    nameProduct: "",
+    productName: "",
     description: "",
     price: 0,
     stock: 0,
@@ -21,13 +15,13 @@ export const CreateProduct = () => {
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:8080/apiv1/signup", {
-        method: "POST",
-        body: JSON.stringify(productData),
-      });
-      console.log(response);
+      let resp = await createProductBD(productData);
+      if (resp) {
+        e.target.reset();
+        alert(resp);
+      }
     } catch (error) {
-      console.error(error);
+      alert(error);
     }
   };
 
@@ -41,11 +35,11 @@ export const CreateProduct = () => {
       <Title title="Crear producto" />
       <form onSubmit={handleSubmit}>
         <FormControl variant="standard" style={{ color: "GrayText" }}>
-          <InputLabel htmlFor="nameProduct">Nombre del producto</InputLabel>
+          <InputLabel htmlFor="productName">Nombre del producto</InputLabel>
           <Input
-            id="nameProduct"
-            aria-describedby="nameProduct-text"
-            name="nameProduct"
+            id="productName"
+            aria-describedby="productName-text"
+            name="productName"
             type="text"
             placeholder="Agregar nombre"
             onChange={handleChange}
