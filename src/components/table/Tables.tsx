@@ -74,29 +74,49 @@ export default function DataTable() {
     }
   };
 
-const paginationModel = { page: 0, pageSize: 8 };
+  const paginationModel = { page: 0, pageSize: 8 };
+  const [rows, setRows] = useState<ProductDataTable[] | []>();
 
-export default function DataTable() {
+  useEffect(() => {
+    async function getData() {
+      let data = await changeBDToTable();
+      setRows(data);
+    }
+    console.log("data:", rows);
+    getData();
+  }, [dialog]);
+
   return (
     <>
-      {rows.length > 0 ? (
-        <Paper
-          sx={{
-            height: "100%",
-            minHeight: "400px",
-            width: "80%",
-            margin: "auto",
-          }}
-        >
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            initialState={{ pagination: { paginationModel } }}
-            pageSizeOptions={[8, 10]}
-            checkboxSelection
-            sx={{ border: 0 }}
-          />
-        </Paper>
+      {rows?.length ? (
+        <>
+          <Paper
+            sx={{
+              height: "100%",
+              minHeight: "400px",
+              width: "80%",
+              margin: "auto",
+            }}
+          >
+            <DataGrid
+              rows={rows}
+              columns={columns}
+              initialState={{ pagination: { paginationModel } }}
+              pageSizeOptions={[8, 10]}
+              sx={{ border: 0 }}
+            />
+          </Paper>
+          <div>
+            {dialog && (
+              <AlertDialog
+                title={"Producto eliminado correctamente"}
+                description=""
+                opc1={"Ok"}
+                isOpen={dialog}
+              />
+            )}
+          </div>
+        </>
       ) : (
         <Paper
           sx={{
