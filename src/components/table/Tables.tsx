@@ -3,104 +3,76 @@ import Paper from "@mui/material/Paper";
 import { Button } from "@mui/material";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import EditIcon from "@mui/icons-material/Edit";
+import { Link } from "react-router-dom";
+import { ProductDataTable } from "../../utils/types/productTable";
+import { changeBDToTable } from "../../service/getProducts";
+import { useEffect, useState } from "react";
+import { deleteProductBD } from "../../service/deleteProduct";
+import AlertDialog from "../dialog/AlertDialog";
 
-const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "nameProduct", headerName: "Nombre" },
-  { field: "description", headerName: "Descripcion" },
-  {
-    field: "price",
-    headerName: "Price",
-    type: "number",
-    width: 70,
-  },
-  {
-    field: "stock",
-    headerName: "Stock",
-    type: "number",
-    width: 70,
-  },
-  {
-    field: "update",
-    headerName: "Editar",
-    type: "string",
-    renderCell: (e) => (
-      <strong>
-        <Link to={`/updateProduct/${e.id}`}>
-          <Button variant="contained" size="small">
-            <EditIcon />
+export default function DataTable() {
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "productName", headerName: "Nombre", width: 130 },
+    { field: "description", headerName: "Descripcion", width: 170 },
+    {
+      field: "price",
+      headerName: "Price",
+      type: "number",
+      width: 70,
+    },
+    {
+      field: "stock",
+      headerName: "Stock",
+      type: "number",
+      width: 70,
+    },
+    {
+      field: "update",
+      headerName: "Editar",
+      type: "string",
+      renderCell: (e) => (
+        <strong>
+          <Link to={`/updateProduct/${e.id}`}>
+            <Button variant="contained" size="small">
+              <EditIcon />
+            </Button>
+          </Link>
+        </strong>
+      ),
+    },
+    {
+      field: "delete",
+      headerName: "Borrar",
+      type: "string",
+      renderCell: (e) => (
+        <strong>
+          <Button
+            variant="contained"
+            size="small"
+            color="error"
+            onClick={() => deleteProduct(+e.id)}
+          >
+            <DeleteForeverIcon />
           </Button>
-        </Link>
-      </strong>
-    ),
-  },
-  {
-    field: "delete",
-    headerName: "Borrar",
-    type: "string",
-    renderCell: (e) => (
-      <strong>
-        <Button
-          variant="contained"
-          size="small"
-          color="error"
-          onClick={() => console.log(e.id)}
-        >
-          <DeleteForeverIcon />
-        </Button>
-      </strong>
-    ),
-  },
-];
+        </strong>
+      ),
+    },
+  ];
 
-const rows = [
-  { id: 1, description: "Snow", nameProduct: "Jon", price: 35, stock: 45 },
-  {
-    id: 2,
-    description: "Lannister",
-    nameProduct: "Cersei",
-    price: 42,
-    stock: 45,
-  },
-  {
-    id: 3,
-    description: "Lannister",
-    nameProduct: "Jaime",
-    price: 45,
-    stock: 45,
-  },
-  { id: 4, description: "Stark", nameProduct: "Arya", price: 16, stock: 45 },
-  {
-    id: 5,
-    description: "Targaryen",
-    nameProduct: "Daenerys",
-    price: 10,
-    stock: 45,
-  },
-  {
-    id: 6,
-    description: "Melisandre",
-    nameProduct: null,
-    price: 150,
-    stock: 45,
-  },
-  {
-    id: 7,
-    description: "Clifford",
-    nameProduct: "Ferrara",
-    price: 44,
-    stock: 45,
-  },
-  {
-    id: 8,
-    description: "Frances",
-    nameProduct: "Rossini",
-    price: 36,
-    stock: 45,
-  },
-  { id: 9, description: "Roxie", nameProduct: "Harvey", price: 65, stock: 45 },
-  { id: 10, description: "Roxie", nameProduct: "Harvey", price: 65, stock: 45 },
-];
+  const [dialog, setDialog] = useState(false);
+  const deleteProduct = async (id: number) => {
+    try {
+      let resp = await deleteProductBD(id);
+      if (resp) {
+        console.log("Producto con id: " + id + ", fue eliminado.");
+
+        setDialog(true);
+      }
+    } catch (e) {
+      throw new Error("No se logro eliminar el producto en la BD.");
+    }
+  };
 
 const paginationModel = { page: 0, pageSize: 8 };
 
