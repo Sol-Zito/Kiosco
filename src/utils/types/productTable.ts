@@ -1,6 +1,6 @@
 export type ProductDataTable = {
   id: number;
-  nameProduct: string;
+  productName: string;
   price: number;
   description: string;
   stock: number;
